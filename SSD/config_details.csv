@@ -1,0 +1,17 @@
+
+img_height : Height of the input images
+img_width : Width of the input images
+img_channels : Number of color channels of the input images
+intensity_mean:Set this to your preference (maybe `None`). The current settings transform the input pixel values to the interval `[-1,1]`.
+intensity_range : Set this to your preference (maybe `None`). The current settings transform the input pixel values to the interval `[-1,1]`.
+n_classes : Number of positive classes
+
+scales : An explicit list of anchor box scaling factors. If this is passed, it will override `min_scale` and `max_scale`.
+aspect_ratios :The list of aspect ratios for the anchor boxes
+
+two_boxes_for_ar1 = True : Whether or not you want to generate two anchor boxes for aspect ratio 1
+steps : In case you'd like to set the step sizes for the anchor box grids manually; not recommended
+offsets : In case you'd like to set the offsets for the anchor box grids manually; not recommended
+clip_boxes : Whether or not to clip the anchor boxes to lie entirely within the image boundaries
+variances : The list of variances by which the encoded target coordinates are scaled
+normalize_coords : Whether or not the model is supposed to use coordinates relative to the image size

@@ -1,21 +1,12 @@
-.../TACO-master/data/batch_5/000005.JPG
-TACO-master/data/batch_14/000032.jpg : Cigarette
-TACO-master/data/batch_14/000041.jpg : straw
-TACO-master/data/batch_12/000001.jpg : Cup
-TACO-master/data/batch_12/000015.jpg : Bottle Cap
-TACO-master/data/batch_12/000021.jpg : Bottle
-TACO-master/data/batch_12/000029.jpg : Bottle
-TACO-master/data/batch_12/000044.jpg : Can
-TACO-master/data/batch_3/IMG_4874.JPG
-TACO-master/data/batch_3/IMG_4996.JPG
-TACO-master/data/batch_6/000002.JPG
-TACO-master/data/batch_14/000001.jpg
-
-python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_3/IMG_4874.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
-python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_3/IMG_4996.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
-python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_6/000002.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
-python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_14/000001.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
-
-python3 run_v2.py evaluate --evaluate_img=../TACO/data/batch_3/IMG_4996.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
-
-
+Some samples images that can be tested
+TACO/data/batch_14/000032.jpg 
+TACO/data/batch_14/000041.jpg 
+TACO/data/batch_12/000001.jpg 
+TACO/data/batch_12/000015.jpg 
+TACO/data/batch_12/000021.jpg 
+TACO/data/batch_12/000029.jpg 
+TACO/data/batch_12/000044.jpg 
+TACO/data/batch_3/IMG_4874.JPG
+TACO/data/batch_3/IMG_4996.JPG
+TACO/data/batch_6/000002.JPG
+TACO/data/batch_14/000001.jpg

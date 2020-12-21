@@ -285,13 +285,13 @@ def build_model(image_size,
     pool2 = MaxPooling2D(pool_size=(2, 2), name='pool2')(conv2)
 
     # Model Additions and modifications >>
-    # adding 64(add_8),128,64 based VGG-16 like units (Conv2D,Conv2D,Maxpool) to allow for feature extraction
+    # adding 64(add_8),128(add_9),64(add_11) based VGG-16 like units (Conv2D,Conv2D,Maxpool) to allow for feature extraction
     # Layer conv_add_11
-    
+
 
     conv3 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv3')(pool2)
     conv_add_8 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_8')(conv3)
-     pool_add_8 = MaxPooling2D(pool_size=(2, 2), name='pool8',padding='same')(conv_add_8)
+    pool_add_8 = MaxPooling2D(pool_size=(2, 2), name='pool8',padding='same')(conv_add_8)
     print("pool_add_8: ",pool_add_8.shape)
    
    

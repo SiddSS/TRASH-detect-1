@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
 # Use the commands to make use of the code in the repository
-# python3 run.py train --dataset=../TACO-master/data --pretrained_weights=False
-# python run.py evaluate --evaluate_img=../TACO-master/data/batch_2/000000.JPG
+
+# python3 run.py train --dataset=../TACO/data 
+# python3 run.py train --dataset=../TACO/data --model=model_weights/Model_v2.h5
+
+# python3 run.py train --dataset=../TACO/data --annot_train=map10_without_batch10_15_train.json --annot_val=map10_without_batch10_15_val.json
+# python3 run.py train --dataset=../TACO/data --config=config_v2.json --model=model_weights/Model_v2.h5 --annot_train=custom_map_train_lskw_rm10_15.json --annot_val=custom_map_val_lskw.json
+
+
+# python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model.h5 --config=config.json
+# python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model_v2.h5 --config=config_v2.json
+
 
 # making necessary imports
 from tensorflow.keras.optimizers import Adam
@@ -38,24 +47,37 @@ if __name__=='__main__':
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Run SSD on TACO.')
     parser.add_argument("command", metavar="<command>",help="Opt: 'train', 'evaluate'")
-    parser.add_argument('--pretrained_weights', required=False,default=False,type=bool, help="True or False")
+    # parser.add_argument('--pretrained_weights', required=False,default=False,type=bool, help="True or False")
+    parser.add_argument('--config', required=False,default="config.json",metavar="/path/config.json", help="Path to config json")    
     parser.add_argument('--model', required=False,default="model_weights/Model.h5",metavar="/path/model.h5", help="Path to weights .h5 file")
+    parser.add_argument('--annot_train', required=False,default="None",metavar="/path/to/train_annot.json", help="Path to train annotation file")
+    parser.add_argument('--annot_val', required=False,default="None",metavar="/path/to/val_annot.json", help="Path to val samples annotation file")
     parser.add_argument('--dataset', required=False, metavar="/path/dir", help='Directory of the dataset',default='../TACO-master/data')
     parser.add_argument('--lrate', required=False, default=0.001, type=float, help='learning rate')
     parser.add_argument('--evaluate_img',required=False,default='images/img.jpg',metavar="/path/dir", help='Directory of the dataset')
+   
     # parser.add_argument('--class_map', required=True, metavar="/path/file.csv", help=' Target classes')
+   
     DEFAULT_LOGS_DIR="/training_logs"
     args = parser.parse_args()
+
+    print("-------------------------")
     print("Command: ", args.command)
-    print("pretrained_weights: ",args.pretrained_weights)
+    # print("pretrained_weights: ",args.pretrained_weights)
+    if (not args.annot_train=="None") and (not args.annot_val=="None"):
+        print("annot_train: ",args.annot_train)
+        print("annot_train: ",args.annot_val)
+    print("config: ", args.config)
     print("Model: ", args.model)
     print("Dataset: ", args.dataset)
     print("Logs: ", DEFAULT_LOGS_DIR)
+    print("-------------------------")
 
 
 ## 1. Set the model configuration parameters in the config.json file
 
-with open('config.json') as f:
+# with open('config.json') as f:
+with open(args.config) as f:    
   config = json.load(f)
 
 img_height=config["img_height"] # Height of the input images
@@ -100,8 +122,9 @@ model = build_model(image_size=(img_height, img_width, img_channels),
                         divide_by_stddev=intensity_range)
 
 # 2: Optional: Load some weights
-if not args.pretrained_weights:
-    model.load_weights(args.model, by_name=True)
+# currently not supported
+# if not args.pretrained_weights:
+#     model.load_weights(args.model, by_name=True)
 
 # 3: Instantiate an Adam optimizer and the SSD loss function and compile the model
 
@@ -156,12 +179,19 @@ if args.command=='train':
 
 
     # ours DAS AUTO
-    image_dir= '../TACO-master/data/'
+    image_dir= '../TACO/data/'
 
 
     #DAS AUTO
-    train_labels_filename='map10_without_batch10_15_val.json'
-    val_labels_filename='map10_without_batch10_15_val.json'
+    # train_labels_filename='map10_without_batch10_15_val.json'
+    # val_labels_filename='map10_without_batch10_15_val.json'
+    if args.annot_train=="None" or args.annot_val=="None":
+        # print("Error annotation file not found for either val or train")
+        raise NameError("Error annotation file not found for either val or train") 
+        
+    train_labels_filename=args.annot_train
+    val_labels_filename=args.annot_val
+
 
     train_dataset.parse_json(images_dirs=[image_dir],
                              annotations_filenames=[train_labels_filename],
@@ -310,7 +340,7 @@ if args.command=='train':
     plt.plot(history.history['loss'], label='loss')
     plt.plot(history.history['val_loss'], label='val_loss')
 
-    plt.legend(loc='upper right', prop={'size': 24});
+    plt.legend(loc='upper right', prop={'size': 24})
     plt.savefig('graph_history.png')
 
 # Set the generator for the evaluation on some images
@@ -333,14 +363,15 @@ if args.command=="evaluate":
 
 
     y_pred_decoded = decode_detections(y_pred,
-                                   confidence_thresh=0.1,
+                                   confidence_thresh=0.08,
                                    iou_threshold=0.45,
                                    top_k=10,
                                    normalize_coords=normalize_coords,
                                    img_height=img_height,
                                    img_width=img_width)
     # this can be changed
-    confidence_threshold = 0.0
+    # confidence_threshold = 0.0
+    print(y_pred)
 
     np.set_printoptions(precision=2, suppress=True, linewidth=90)
     print("Predicted boxes:\n")
@@ -370,6 +401,7 @@ if args.command=="evaluate":
 
     # saving the image to the output folder
     img_save=list(img_path.split('/'))
-    saved_output="output/output_{}".format(img_save[-1])
+    model_name=(args.model.split('/')[-1]).split('.')[0]
+    saved_output="output/{}_output_{}".format(model_name,img_save[-1])
     print("Saving......{}".format(saved_output))
     plt.savefig(saved_output)

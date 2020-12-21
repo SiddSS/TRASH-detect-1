@@ -19,7 +19,7 @@ If you're using any code style like xo, standard etc. That will help others whil
 <b>Built with</b>
 - Python
 
-The repository ?? is a main source of code.
+The repository https://github.com/pierluigiferrari/ssd_keras is a main source of code.
 
 
 ## Libraries

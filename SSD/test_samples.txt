@@ -7,6 +7,5 @@ TACO/data/batch_12/000021.jpg
 TACO/data/batch_12/000029.jpg 
 TACO/data/batch_12/000044.jpg 
 TACO/data/batch_3/IMG_4874.JPG
-TACO/data/batch_3/IMG_4996.JPG
-TACO/data/batch_6/000002.JPG
-TACO/data/batch_14/000001.jpg
+
+

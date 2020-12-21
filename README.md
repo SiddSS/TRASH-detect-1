@@ -19,8 +19,12 @@ If you're using any code style like xo, standard etc. That will help others whil
 <b>Built with</b>
 - Python
 
-The repository https://github.com/pierluigiferrari/ssd_keras is a main source of code.
+## Sources/Refrences
+- The repository https://github.com/pierluigiferrari/ssd_keras is a main source of code.
+- The SSD paper : https://arxiv.org/pdf/1512.02325.pdf
+- The dataset is from : https://github.com/pedropro/TACO.
 
+For details on the dataset : http://tacodataset.org/
 
 ## Libraries
 The libraries used in building the project are listed here :
@@ -37,15 +41,49 @@ python3 download.py
 This will download the TACO dataset for trash detection into the proper directory sa required to run other code.
 
 From the SSD folder run the following commands depending on usage:
+Two models are present in the model_weights folder 
+Model: Uses mapping of 10 categories 
+Model_v2: Uses mapping of 19 categories
 Train:
 ```
-python3 run.py train --dataset=../TACO/data --pretrained_weights=False
+python3 run.py train --dataset=../TACO/data --annot_train=map10_without_batch10_15_train.json --annot_val=map10_without_batch10_15_val.json
+
+```
+
+```
+python3 run.py train --dataset=../TACO/data --config=config_v2.json --model=model_weights/Model_v2.h5 --annot_train=custom_map_train_lskw_rm10_15.json --annot_val=custom_map_val_lskw.json
+
+
 ```
 
 Evaluate: In this just give a single image path
-```
-python run.py evaluate --evaluate_img=../TACO/data/batch_2/000000.JPG
 
+```
+python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model.h5 --config=config.json
+```
+
+```
+python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model_v2.h5 --config=config_v2.json
+
+```
+Test image paths are provided in test_samples.txt change the path of image in the above command with the image path to generate the images.
+
+The config files contain all the required parameters as descirbed in config_details.csv
+
+The model sets provided are :
+
+For Model.h5 and config.json
+- SSD/map10_without_batch10_15_train.json
+- SSD/map10_without_batch10_15_val.json
+
+
+For Model_v2.h5 and config_v2.json
+- SSD/custom_map_train_lskw_rm10_15.json
+- SSD/custom_map_val_lskw.json
+
+For details on running the run.py with different arguments do 
+```
+python3 run.py -h
 ```
 
 ## Team

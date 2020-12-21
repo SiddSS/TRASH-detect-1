@@ -7,7 +7,15 @@ TACO-master/data/batch_12/000021.jpg : Bottle
 TACO-master/data/batch_12/000029.jpg : Bottle
 TACO-master/data/batch_12/000044.jpg : Can
 TACO-master/data/batch_3/IMG_4874.JPG
-TACO-master/data/batch_3/IMG_4874.JPG
 TACO-master/data/batch_3/IMG_4996.JPG
 TACO-master/data/batch_6/000002.JPG
 TACO-master/data/batch_14/000001.jpg
+
+python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_3/IMG_4874.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
+python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_3/IMG_4996.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
+python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_6/000002.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
+python3 run_v2.py evaluate --evaluate_img=.../TACO/data/batch_14/000001.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
+
+python3 run_v2.py evaluate --evaluate_img=../TACO/data/batch_3/IMG_4996.JPG --model=model_weights/Model_v2.h5 --config=config_v2.json
+
+

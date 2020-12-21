@@ -1,0 +1,18 @@
+{
+  "img_height": 512,
+  "img_width": 512,
+  "img_channels": 3,
+  "intensity_mean": 127.5,
+  "intensity_range": 127.5,
+  "n_classes": 19,
+  "scales": [0.04, 0.08, 0.16, 0.32, 0.64, 0.96],
+  "aspect_ratios": [0.25, 0.5, 1.0, 2.0, 4.0],
+  "two_boxes_for_ar1": true,
+  "steps": null,
+  "offsets": null,
+  "clip_boxes": false,
+  "variances": [1.0, 1.0, 1.0, 1.0],
+  "normalize_coords": true,
+  "batch_size":16,
+  "classes": ["background","Other", "Metal", "Plastic bottle", "Glass bottle", "Plastic cap", "Metal bottle cap", "Broken Glass", "Can", "Carton", "Cup", "Paper", "Plastic film", "Wrapper", "Plastic container", "Pop tab", "Straw", "Styrofoam piece", "Plastic", "Cigarette"]
+}

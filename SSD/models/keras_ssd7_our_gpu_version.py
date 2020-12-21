@@ -273,7 +273,7 @@ def build_model(image_size,
         x1 = Lambda(input_stddev_normalization, output_shape=(img_height, img_width, img_channels), name='input_stddev_normalization')(x1)
     if swap_channels:
         x1 = Lambda(input_channel_swap, output_shape=(img_height, img_width, img_channels), name='input_channel_swap')(x1)
-  # 32->48->(64)->64->(128)->(128)->[(64)->64->48->48->32]=> [64,64,48,48,32]
+  # 32->48->(64)->(128)->[(64)->64->48->48->32]=> The prediction layres : [64,64,48,48,32]
     conv1 = Conv2D(32, (5, 5), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv1')(x1)
     conv1 = BatchNormalization(axis=3, momentum=0.99, name='bn1')(conv1) # Tensorflow uses filter format [filter_height, filter_width, in_channels, out_channels], hence axis = 3
     conv1 = ELU(name='elu1')(conv1)
@@ -284,35 +284,23 @@ def build_model(image_size,
     conv2 = ELU(name='elu2')(conv2)
     pool2 = MaxPooling2D(pool_size=(2, 2), name='pool2')(conv2)
 
-    # conv3 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv3')(pool2)
-    # conv3 = BatchNormalization(axis=3, momentum=0.99, name='bn3')(conv3)
-    # conv3 = ELU(name='elu3')(conv3)
-    # pool3 = MaxPooling2D(pool_size=(2, 2), name='pool3')(conv3)
+    # Model Additions and modifications >>
+    # adding 64(add_8),128,64 based VGG-16 like units (Conv2D,Conv2D,Maxpool) to allow for feature extraction
+    # Layer conv_add_11
+    
 
-
-# adding 64(add_8),128,128,64
     conv3 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv3')(pool2)
     conv_add_8 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_8')(conv3)
-    # conv_add_8 = BatchNormalization(axis=3, momentum=0.99, name='bn8')(conv_add_8)
-    # conv_add_8 = ELU(name='elu8')(conv_add_8)
-    pool_add_8 = MaxPooling2D(pool_size=(2, 2), name='pool8',padding='same')(conv_add_8)
+     pool_add_8 = MaxPooling2D(pool_size=(2, 2), name='pool8',padding='same')(conv_add_8)
     print("pool_add_8: ",pool_add_8.shape)
-    # conv_add_9 = Conv2D(128, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_9')(pool_add_8)
-    # conv_add_9 = BatchNormalization(axis=3, momentum=0.99, name='bn9')(conv_add_9)
-    # conv_add_9 = ELU(name='elu9')(conv_add_9)
-    # pool_add_9 = MaxPooling2D(pool_size=(2, 2), name='pool9',padding='same')(conv_add_9)
-
-    # conv_add_10 = Conv2D(128, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_10')(pool_add_9)
-    # conv_add_10 = BatchNormalization(axis=3, momentum=0.99, name='bn10')(conv_add_10)
-    # conv_add_10 = ELU(name='elu10')(conv_add_10)
-    # pool_add_10 = MaxPooling2D(pool_size=(2, 2), name='pool10',padding='same')(conv_add_10)
-
+   
+   
     conv_add_9 = Conv2D(128, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_9')(pool_add_8)
     conv_add_10 = Conv2D(128, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_10')(conv_add_9)
     pool_add_10 = MaxPooling2D(pool_size=(2, 2), name='pool10',padding='same')(conv_add_10)
     print("pool_add_10: ",pool_add_10.shape)
 
-
+    # This is also a bounding box extraction layer along with 4,5,6,7
     conv_add_11 = Conv2D(64, (3, 3), strides=(1, 1), padding="same", kernel_initializer='he_normal', kernel_regularizer=l2(l2_reg), name='conv_add_11')(pool_add_10)
     conv_add_11 = BatchNormalization(axis=3, momentum=0.99, name='bn11')(conv_add_11)
     conv_add_11 = ELU(name='elu11')(conv_add_11)

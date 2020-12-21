@@ -2,17 +2,7 @@
 The repo contains code for a SSD-Sinlge Shot Detector to detect trash in an image. It takes input as an image and outputs bounding boxes over all the instance of trash in the image.
 ## Motivation
 This project was done as a part of the CS344/CS386 Course Project, under the guidance of Dr. Clint P. George.
-<!-- 
-## Build status
-Build status of continus integration i.e. travis, appveyor etc. Ex. - 
 
-[![Build Status](https://travis-ci.org/akashnimare/foco.svg?branch=master)](https://travis-ci.org/akashnimare/foco)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/akashnimare/foco?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/foco/branch/master) -->
-
-<!-- ## Code style
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
-
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
   -->
  
 ## Tech
@@ -59,11 +49,11 @@ python3 run.py train --dataset=../TACO/data --config=config_v2.json --model=mode
 Evaluate: In this just give a single image path
 
 ```
-python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model.h5 --config=config.json
+python3 run.py evaluate --evaluate_img=../TACO/data/batch_12/000044.jpg   --model=model_weights/Model.h5 --config=config.json
 ```
 
 ```
-python3 run.py evaluate --evaluate_img=../TACO/data/batch_14/000001.jpg --model=model_weights/Model_v2.h5 --config=config_v2.json
+python3 run.py evaluate --evaluate_img=../TACO/data/batch_12/000044.jpg --model=model_weights/Model_v2.h5 --config=config_v2.json
 
 ```
 Test image paths are provided in test_samples.txt change the path of image in the above command with the image path to generate the images.
